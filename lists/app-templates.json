@@ -6,6 +6,10 @@
       "description": "Main app Webpack 2 boilerplate for Quasar v0.9+ with Vue 2"
     },
     {
+      "name": "default#typescript",
+      "description": "Main app Webpack 2 boilerplate using Typescript for Quasar v0.9+ with Vue 2"
+    },
+    {
       "name": "default#webpack1",
       "description": "Main app Webpack 1 boilerplate for Quasar v0.8+ with Vue 2"
     },
