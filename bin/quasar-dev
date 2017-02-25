@@ -10,8 +10,12 @@ var
   log = require('../lib/log'),
   net = require('net'),
   ips,
+<<<<<<< HEAD
+  port
+=======
   port,
   testServer
+>>>>>>> 28796e14f290b8b3573d7075906ea16fabc087f9
 
 command
   .usage('[theme] [options]')
@@ -41,6 +45,19 @@ if (!qfs.is.inAppFolder()) {
 
 port = getPort()
 
+<<<<<<< HEAD
+function killProcess (kill) {
+  if (kill) {
+    log.warning('The port ' + port + ' is already in use. Halting Quasar dev server startup.')
+    log.warning('To fix: Stop the process currently using port ' + port + ' or set your config to a different port.')
+    process.kill(process.pid)
+  }
+}
+
+checkPort(port, killProcess)
+
+if (command.play) {
+=======
 testServer = net.createServer()
 .once('error', err => {
   if (err.code !== 'EADDRINUSE') {
@@ -59,6 +76,7 @@ testServer = net.createServer()
     return
   }
 
+>>>>>>> 28796e14f290b8b3573d7075906ea16fabc087f9
   ips = getHostIps()
 
   if (ips.length === 0) {
@@ -116,6 +134,25 @@ function getPort () {
   if (process.env.PORT) {
     return process.env.PORT
   }
+<<<<<<< HEAD
+  return require(qfs.get.root('config')).dev.port
+=======
   var configFile = qfs.get.root('config', 'index.js')
   return qfs.exists(configFile) ? require(configFile).dev.port : 8080
+>>>>>>> 28796e14f290b8b3573d7075906ea16fabc087f9
+}
+
+function checkPort (port, killProcess) {
+  var testServer = net.createServer()
+  .once('error', err => {
+    if (err.code !== 'EADDRINUSE') {
+      return
+    }
+    killProcess(true)
+  })
+  .once('listening', () => {
+    testServer.once('close', () => { killProcess(false) })
+    .close()
+  })
+  .listen(port)
 }
