@@ -4,7 +4,17 @@
   "description": "Quasar Framework CLI",
   "preferGlobal": true,
   "bin": {
-    "quasar": "./bin/quasar"
+    "quasar": "./bin/quasar",
+    "quasar-build": "./bin/quasar-build",
+    "quasar-clean": "./bin/quasar-clean",
+    "quasar-dev": "./bin/quasar-dev",
+    "quasar-init": "./bin/quasar-init",
+    "quasar-lint": "./bin/quasar-lint",
+    "quasar-list": "./bin/quasar-list",
+    "quasar-new": "./bin/quasar-new",
+    "quasar-serve": "./bin/quasar-serve",
+    "quasar-test": "./bin/quasar-test",
+    "quasar-wrap": "./bin/quasar-wrap"
   },
   "files": [
     "bin",
