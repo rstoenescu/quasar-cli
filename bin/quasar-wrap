@@ -7,7 +7,7 @@ var
   appPath,
   wrapperName,
   wrapper,
-  wrapperList = ['cordova', 'electron']
+  wrapperList = ['cordova', 'electron', 'graphql-api']
 
 if (!qfs.is.inAppFolder()) {
   log.fatal('Not in an App folder.')
