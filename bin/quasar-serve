@@ -4,10 +4,13 @@ var
   command = require('commander'),
   watch = require('gulp-watch'),
   server = require('browser-sync'),
-  log = require('../lib/log')
+  log = require('../lib/log'),
+  qfs = require('../lib/qfs'),
+  folder
 
 command
   .usage('[folder]')
+  .option('-p, --port <n>', 'port for asset serving', parseInt)
   .on('--help', function () {
     log('  Examples:')
     log()
@@ -17,12 +20,26 @@ command
     log('    # serve specific folder'.gray)
     log('    $ quasar serve ./dist')
     log('    $ quasar serve /work/quasar-app/dist')
+    log()
+    log('    # serve on specific port'.gray)
+    log('    $ quasar serve --port 5000')
   })
   .parse(process.argv)
 
-var folder = command.args[0] || process.cwd() // eslint-disable-line one-var
+function getFolder () {
+  if (qfs.is.inAppFolder()) {
+    var folder = qfs.get.root('dist')
+    if (qfs.exists(folder)) {
+      return folder
+    }
+  }
+  return process.cwd()
+}
+
+folder = command.args[0] || getFolder()
 
 server.create().init({
+  port: command.port || process.env.PORT || 3000,
   open: false,
   reloadOnRestart: true,
   ghostMode: false,
