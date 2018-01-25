@@ -47,13 +47,14 @@ const
   fs = require('fs'),
   fse = require('fs-extra')
 
-if (argv._.length !== 2) {
+if (argv._.length <= 1) {
   console.log()
   warn(`Wrong number of parameters (${argv._.length}).`)
   showHelp()
 }
 
-let [ type, name ] = argv._
+let [ type ] = argv._
+let names = argv._.slice(1)
 
 if (!['p', 'page', 'l', 'layout', 'c', 'component', 's', 'store', 'plugin'].includes(type)) {
   console.log()
@@ -99,32 +100,42 @@ const
     }
   },
   asset = mapping[type],
-  hasExtension = !asset.ext || (asset.ext && name.endsWith(asset.ext)),
-  ext = hasExtension ? '' : asset.ext,
-  file = appPaths.resolve.src(path.join(asset.folder, name + ext))
+  files = names.map(name => appPaths.resolve.src(path.join(asset.folder, `${name}${asset.ext || ''}`))),
+  filesToSave = []
 
-if (fs.existsSync(file)) {
+for (let i = 0; i < files.length; i++) {
+  if (!fs.existsSync(files[i])) {
+    filesToSave.push(files[i])
+  } else {
+    console.log()
+    warn(`A ${type} with ${files[i]} name already exists.`)
+  }
+}
+
+if (!filesToSave.length) {
   console.log()
-  warn(`A ${type} with that name already exists. Aborting.`)
+  warn(`No files to save.`)
   warn()
   process.exit(1)
 }
 
-fse.mkdirp(path.dirname(file))
-fse.copy(
-  appPaths.resolve.cli(path.join('templates/app', type + (asset.ext || ''))),
-  file,
-  err => {
-    if (err) {
-      console.warn(err)
-      warn('Failed to generate the asset.')
-      process.exit(1)
-    }
+const src = appPaths.resolve.cli(path.join('templates/app', type + (asset.ext || '')))
+for (let i = 0; i < filesToSave.length; i++) {
+  (function (file, src) {
+    fse.mkdirp(path.dirname(file))
+    fse.copy(src, file, (err) => {
+      if (err) {
+        console.warn(err)
+        warn(`Failed to generate the asset ${file} from ${src}.`)
+        warn()
+        process.exit(1)
+      }
 
-    log(`Generated ${type}: ${path.relative(appPaths.appDir, file)}`)
-    if (asset.reference) {
-      log(`Make sure to reference it in ${asset.reference}`)
-    }
-    log()
-  }
-)
+      log()
+      log(`Generated ${type}: ${path.relative(appPaths.appDir, file)}`)
+      if (asset.reference) {
+        log(`Make sure to reference it in ${asset.reference}`)
+      }
+    })
+  })(filesToSave[i], src)
+}
