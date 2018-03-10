@@ -20,6 +20,7 @@ function showHelp () {
       $ quasar new [c|component] <component_file_name>
       $ quasar new plugin <plugin_name>
       $ quasar new [s|store] <store_module_name>
+      $ quasar new [t|test] <test_name>
 
       # Examples:
 
@@ -31,6 +32,9 @@ function showHelp () {
 
       # Create src/layouts/shop/Checkout.vue
       $ quasar new layout shop/Checkout.vue
+
+      # Create src/tests/mathtest.js
+      $ quasar new test mathtest
 
     Options
       --help, -h     Displays this message
@@ -60,7 +64,7 @@ if (argv._.length < 2) {
 
 let [ type, ...names ] = argv._
 
-if (!['p', 'page', 'l', 'layout', 'c', 'component', 's', 'store', 'plugin'].includes(type)) {
+if (!['p', 'page', 'l', 'layout', 'c', 'component', 's', 'store', 'plugin', 't', 'test'].includes(type)) {
   console.log()
   warn(`Invalid asset type: ${type}`)
   showHelp()
@@ -71,7 +75,8 @@ if (type.length === 1) {
     p: 'page',
     l: 'layout',
     c: 'component',
-    s: 'store'
+    s: 'store',
+    t: 'test'
   }
   type = fullCmd[type]
 }
@@ -140,6 +145,11 @@ const
       folder: 'plugins',
       ext: '.js',
       reference: 'quasar.conf.js > plugins'
+    },
+    test: {
+      folder: 'test',
+      ext: '.js',
+      reference:'src/test/test.js'
     }
   },
   asset = mapping[type]

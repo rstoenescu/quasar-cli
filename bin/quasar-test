@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+
+const
+  parseArgs = require('minimist'),
+  chalk = require('chalk')
+
+const
+  log = require('../lib/helpers/logger')('app:mode')
+  appPaths = require('../lib/build/app-paths')
+
+const argv = parseArgs(process.argv.slice(2), {
+  alias: {
+    a: 'add',
+    r: 'remove',
+    h: 'help'
+  },
+  string: ['a', 'r'],
+  boolean: ['h']
+})
+
+if (argv.help) {
+  // these options are taken from https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-unit-mocha
+  console.log(`
+    Description
+      Run all tests found in tests/*.js
+
+     Options     
+      --watch, -w     run in watch mode
+      --grep, -g      only run tests matching <pattern>
+      --slow, -s      "slow" test threshold in milliseconds
+      --timeout, -t   timeout threshold in milliseconds
+      --bail, -b      bail after first test failure
+      
+      --add, -a      a hook that calls quasar add test
+      --help, -h     Displays this message
+
+    Usage
+      # run all tests currently installed
+      $ quasar test
+
+      # determine what tests are currently installed:
+      $ quasar test list
+
+  `)
+  process.exit(0)
+}
+
+require('../lib/helpers/ensure-argv')(argv, 'mode')
+const getMode = require('../lib/mode')
+
+if (argv.add) {
+  getMode(argv.add).add()
+  process.exit(0)
+}
+else if (argv.remove) {
+  getMode(argv.remove).remove()
+  process.exit(0)
+}
