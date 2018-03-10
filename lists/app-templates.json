@@ -15,6 +15,10 @@
       "deprecated": true
     },
     {
+      "name": "default#typescript",
+      "description": "Main app Webpack 2 boilerplate using Typescript for Quasar v0.9+ with Vue 2"
+    },
+    {
       "name": "default#webpack1",
       "description": "Boilerplate for Quasar v0.8-v0.12 (Webpack 1, Vue 2)",
       "deprecated": true
