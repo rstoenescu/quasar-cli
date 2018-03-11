@@ -35,7 +35,7 @@ describe('#Schroedinger\'s Concat', function() {
   })
 })
 
-let assert = require('chai').assert
+var assert = require('chai').assert;
 
 function add() {
   return Array.prototype.slice.call(arguments).reduce(function(prev, curr) {
