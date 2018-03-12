@@ -40,7 +40,7 @@
   "bugs": "https://github.com/quasarframework/quasar-cli/issues",
   "homepage": "http://quasar-framework.org",
   "dependencies": {
-    "@vue/test-utils": "^1.0.0-beta.12",
+    "@vue/test-utils": "^1.0.0-beta.11",
     "ajv": "6.2.1",
     "babel-core": "6.26.0",
     "babel-loader": "7.1.4",
@@ -103,7 +103,6 @@
     "vue-server-renderer": "^2.5.15",
     "vue-style-loader": "4.0.2",
     "vue-template-compiler": "2.5.14",
-    "@vue/test-utils": "^1.0.0-beta.12",
     "vuex": "3.0.1",
     "webpack": "3.11.0",
     "webpack-bundle-analyzer": "2.11.1",
