@@ -4,6 +4,7 @@
 > CLI for Quasar Framework. Start a project, build it, optimize it.
 
 <a href="https://badge.fury.io/js/quasar-cli"><img src="https://badge.fury.io/js/quasar-cli.svg"></a>
+<a href="https://david-dm.org/quasarframework/quasar-cli"><img src="https://david-dm.org/quasarframework/quasar-cli.svg"></a>
 
 # Quasar Framework
 > Build responsive websites, PWAs, hybrid mobile Apps (that look native!) and Electron apps using same code, powered with Vue.
