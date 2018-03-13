@@ -3,7 +3,8 @@
   "version": "0.15.10",
   "description": "Quasar Framework CLI",
   "scripts": {
-    "postinstall": "node lib/node-version-check.js"
+    "postinstall": "node lib/node-version-check.js",
+    "test": "cross-env NODE_ENV=test nyc mocha-webpack --webpack-config templates/unit_test/webpack.config.js --require templates/unit_test/setup.js templates/unit_test/**/*.spec.js"
   },
   "bin": {
     "quasar": "./bin/quasar"
