@@ -23,13 +23,13 @@ if (argv.help) {
     Description
       Add/Remove support for PWA / Cordova / Electron modes.
     Usage
-      $ quasar mode -r|-a pwa|cordova|electron|unit-test
+      $ quasar mode [-r|-a] [pwa|cordova|electron|test]
 
       # determine what modes are currently installed:
       $ quasar mode
     Options
-      --add, -a     Add support for mode [pwa|cordova|electron|unit_test]
-      --remove, -r  Remove support for mode [pwa|cordova|electron|unit_test]
+      --add, -a     Add support for mode [pwa|cordova|electron|test]
+      --remove, -r  Remove support for mode [pwa|cordova|electron|test]
       --help, -h     Displays this message
   `)
   process.exit(0)
@@ -48,7 +48,7 @@ else if (argv.remove) {
 }
 
 log(`Detecting installed modes...`)
-;['pwa', 'cordova', 'electron', 'unit_test'].forEach(mode => {
+;['pwa', 'cordova', 'electron', 'test'].forEach(mode => {
   const QuasarMode = getMode(mode)
   log(
     `[${getMode(mode).isInstalled ? ' yes ' : '  -  '}] Mode ${mode.toUpperCase()}`

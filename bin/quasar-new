@@ -33,7 +33,7 @@ function showHelp () {
       # Create src/layouts/shop/Checkout.vue
       $ quasar new layout shop/Checkout.vue
 
-      # Create src/tests/mathtest.js
+      # Create test/mathtest.js
       $ quasar new test mathtest
 
     Options
@@ -147,9 +147,9 @@ const
       reference: 'quasar.conf.js > plugins'
     },
     test: {
-      folder: 'test',
+      folder: '../test', // maybe there is a more eloquent way to do this
       ext: '.js',
-      reference:'src/test/test.js'
+      reference:'test/test.js'
     }
   },
   asset = mapping[type]
