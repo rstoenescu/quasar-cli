@@ -1,28 +1,42 @@
 #!/usr/bin/env node
 
 const
+  fs = require('fs'),
   parseArgs = require('minimist'),
-  chalk = require('chalk')
+  chalk = require('chalk'),
+  spawn = require('../lib/helpers/spawn'),
+  log = require('../lib/helpers/logger')('app:mode'),
+  appPaths = require('../lib/build/app-paths'),
+  logger = require('../lib/helpers/logger'),
+  warn = logger('app:mode-test', 'red')
 
-const
-  log = require('../lib/helpers/logger')('app:mode')
-  appPaths = require('../lib/build/app-paths')
+  if (!fs.existsSync(appPaths.testDir)) {
+  warn(`
+  Code coverage not setup. Please run:
+   
+    $ quasar mode --add test 
+    
+    `)
+  return
+}
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
-    a: 'add',
-    r: 'remove',
     h: 'help'
   },
   string: ['a', 'r'],
-  boolean: ['h']
+  boolean: ['h', 'c', 'u']
 })
+
+// const unitTests = ['cross-env NODE_ENV=test', 'mocha-webpack', '--webpack-config', 'test/webpack.test.js', '--require', 'test/setup.js', 'test/**/*.spec.js']
+// const coverageTests = ['cross-env NODE_ENV=test nyc --reporter=lcov mocha-webpack --webpack-config test/webpack.config-test.js --require test/setup.js test/**/*.spec.js']
+// "test": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text mocha test/*.js"
 
 if (argv.help) {
   // these options are taken from https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-unit-mocha
   console.log(`
     Description
-      Run all tests found in tests/*.js
+      This runs code coverage on the whole app.
 
      Options     
       --watch, -w     run in watch mode
@@ -31,12 +45,14 @@ if (argv.help) {
       --timeout, -t   timeout threshold in milliseconds
       --bail, -b      bail after first test failure
       
-      --add, -a      a hook that calls quasar add test
       --help, -h     Displays this message
 
     Usage
-      # run all tests currently installed
+      # run all unit tests currently installed
       $ quasar test
+
+      # run all unit tests code coverage currently installed
+      $ quasar test coverage
 
       # determine what tests are currently installed:
       $ quasar test list
@@ -47,6 +63,15 @@ if (argv.help) {
 
 require('../lib/helpers/ensure-argv')(argv, 'mode')
 const getMode = require('../lib/mode')
+
+// choose reporter from command line
+log(`Starting Tests`)
+spawn.sync('./node_modules/cross-env/dist/bin/cross-env.js',
+  ['NODE_ENV=test', './node_modules/nyc/bin/nyc.js', 'report', '--webpack-config ./test/webpack.test.js', '--require ./test/setup.js test/**/*.spec.js'])
+// spawn.sync('./node_modules/nyc/bin/nyc.js',
+//  ['report', '--webpack-config test/webpack.test.js', '--require test/setup.js test/**/*.spec.js'])
+
+
 
 if (argv.add) {
   getMode(argv.add).add()
