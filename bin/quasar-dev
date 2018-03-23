@@ -147,6 +147,7 @@ async function goLive () {
   }
   catch (e) {
     warn(`[FAIL] quasar.conf.js has JS errors`)
+    warn(e.stack || e)
     process.exit(1)
   }
 
