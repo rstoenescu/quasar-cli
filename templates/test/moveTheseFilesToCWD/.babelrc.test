@@ -1,0 +1,33 @@
+{
+  "presets": [
+    [ "env", {"modules": false} ],
+    "stage-2"
+  ],
+  "plugins": ["transform-runtime"],
+  "comments": false,
+  "test": {
+    "presets": [
+      ["env"],
+      ["stage-2"]
+    ],
+    "plugins": [
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./src"
+          ],
+          "alias": {
+            "^@/(.*)$": "<rootDir>/src/components/$1",
+            "quasar": "quasar-framework/dist/quasar.mat.esm.js",
+            "^vue$": "vue/dist/vue.common.js",
+            "src": "<rootDir>/src",
+            "assets": "<rootDir>/src/assets",
+            "components": "<rootDir>/src/components"
+          }
+        }
+      ]
+    ],
+    "plugins": ["istanbul"]
+  }
+}

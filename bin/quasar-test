@@ -9,10 +9,10 @@ const
   appPaths = require('../lib/build/app-paths'),
   logger = require('../lib/helpers/logger'),
   warn = logger('app:mode-test', 'red')
-
+  webpack = require('webpack')
   if (!fs.existsSync(appPaths.testDir)) {
   warn(`
-  Code coverage not setup. Please run:
+  Code coverage and testing not setup. Please run:
    
     $ quasar mode --add test 
     
@@ -22,7 +22,8 @@ const
 
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
-    h: 'help'
+    h: 'help',
+    c: 'cover'
   },
   string: ['a', 'r'],
   boolean: ['h', 'c', 'u']
@@ -39,39 +40,35 @@ if (argv.help) {
       This runs code coverage on the whole app.
 
      Options     
-      --watch, -w     run in watch mode
-      --grep, -g      only run tests matching <pattern>
-      --slow, -s      "slow" test threshold in milliseconds
-      --timeout, -t   timeout threshold in milliseconds
-      --bail, -b      bail after first test failure
-      
+      --cover, -c     Run code coverage       
       --help, -h     Displays this message
 
     Usage
-      # run all unit tests currently installed
-      $ quasar test
+      # run all unit tests currently installed and watch for changes
+      $ quasar test 
 
-      # run all unit tests code coverage currently installed
-      $ quasar test coverage
-
-      # determine what tests are currently installed:
-      $ quasar test list
+      # run code coverage currently installed
+      $ quasar test --coverage
 
   `)
   process.exit(0)
 }
 
+//      log(`Run "quasar test -t -unit" to see watched unit testing.`)
+//      log(`Run "quasar test -t -cover" to see code coverage.`)
+
 require('../lib/helpers/ensure-argv')(argv, 'mode')
 const getMode = require('../lib/mode')
 
-// choose reporter from command line
-log(`Starting Tests`)
-spawn.sync('./node_modules/cross-env/dist/bin/cross-env.js',
-  ['NODE_ENV=test', './node_modules/nyc/bin/nyc.js', 'report', '--webpack-config ./test/webpack.test.js', '--require ./test/setup.js test/**/*.spec.js'])
-// spawn.sync('./node_modules/nyc/bin/nyc.js',
-//  ['report', '--webpack-config test/webpack.test.js', '--require test/setup.js test/**/*.spec.js'])
-
-
+if (argv.cover) {
+ log(`Starting Coverage`)
+ spawn.sync('./node_modules/cross-env/dist/bin/cross-env.js',
+  ['NODE_ENV=test', './node_modules/nyc/bin/nyc.js', 'report', './node_modules/mocha/bin/mocha'])
+} else {
+  log(`Starting Unit Tests`)
+  spawn.sync('./node_modules/cross-env/dist/bin/cross-env.js',
+    ['NODE_ENV=test', './node_modules/mocha-webpack/bin/mocha-webpack'])
+}
 
 if (argv.add) {
   getMode(argv.add).add()

@@ -13,6 +13,7 @@ module.exports = {
       pages: path.resolve(__dirname, '/src/pages'),
       assets: path.resolve(__dirname, '/src/assets'),
       variables: path.resolve(__dirname, '/.quasar/variables.styl'),
+      '@quasar': 'quasar-framework/dist/quasar.mat.esm.js', // is this right? seems hacky
       '@': path.resolve(__dirname, '../src')
     }
   },

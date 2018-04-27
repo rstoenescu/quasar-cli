@@ -1,0 +1,25 @@
+{
+  "check-coverage": true,
+  "per-file": true,
+  "lines": 99,
+  "statements": 99,
+  "functions": 99,
+  "branches": 99,
+  "include": [
+    "**/src/**/*.js"
+  ],
+  "exclude": [
+    "**/test/spec/*.spec.js"
+  ],
+  "ignore-class-method": "methodToIgnore",
+  "reporter": [
+    "lcov",
+    "text",
+    "text-summary"
+  ],
+  "extension": [
+    ".vue"
+  ],
+  "all": true,
+  "report-dir": "./coverage"
+}
