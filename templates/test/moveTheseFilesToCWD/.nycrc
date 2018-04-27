@@ -1,25 +1,16 @@
 {
   "check-coverage": true,
-  "per-file": true,
-  "lines": 99,
-  "statements": 99,
-  "functions": 99,
-  "branches": 99,
-  "include": [
-    "**/src/**/*.js"
-  ],
-  "exclude": [
-    "**/test/spec/*.spec.js"
-  ],
-  "ignore-class-method": "methodToIgnore",
+  "all": true,
+  "lines": 0,
   "reporter": [
     "lcov",
     "text",
     "text-summary"
   ],
-  "extension": [
-    ".vue"
+  "instrument": false,
+  "sourceMap": false,
+  "require": [
+    "./test/setup.js"
   ],
-  "all": true,
   "report-dir": "./coverage"
 }

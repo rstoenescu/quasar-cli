@@ -1,7 +1,5 @@
 const path = require('path'),
-  webpack = require('webpack'),
-  nodeExternals = require('webpack-node-externals')
-  console.log('using /test/webpack.test.js')
+  nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   entry: path.resolve(__dirname, '/.quasar/entry.js'),
@@ -34,47 +32,21 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]?[hash]'
-        }
+        test: /\.js$|\.vue$/,
+        use: {
+          loader: 'istanbul-instrumenter-loader',
+          options: {
+            esModules: true,
+            produceSourceMap: true,
+            fixWebpackSourcePaths: true
+          }
+        },
+        enforce: 'post',
+        exclude: /node_modules|\.spec\.js$/,
       }
     ]
   },
-  devServer: {
-    historyApiFallback: true,
-    noInfo: true
-  },
-  performance: {
-    hints: false
-  },
-  devtool: 'inline-cheap-module-source-map'
-}
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports.devtool = '#source-map'
-  // http://vue-loader.vuejs.org/en/workflow/production.html
-  module.exports.plugins = (module.exports.plugins || []).concat([
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"production"'
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
-      }
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
-    })
-  ])
-}
-
-// test specific setups
-if (process.env.NODE_ENV === 'test') {
-  module.exports.externals = [nodeExternals()]
-  module.exports.devtool = 'inline-cheap-module-source-map'
+  // target: 'node',  // webpack should compile node compatible code (breaks stuff)
+  externals: [nodeExternals()], // in order to ignore all modules in node_modules folder
+  devtool: "inline-cheap-module-source-map"
 }

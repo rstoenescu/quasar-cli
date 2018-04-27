@@ -1,5 +1,5 @@
 --colors
 --webpack-config test/webpack.test.js
---watch
 --require test/setup.js
+--check-leaks
 test/**/*.spec.js

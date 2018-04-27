@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="increment()"></button>
+    <q-btn @click="increment()"></q-btn>
     <ul>
       <li v-for="item in items">
         {{ item }}
