@@ -41,9 +41,10 @@ import 'quasar-app-styl'
 import 'src/css/<%= asset %>'
 <% }) %>
 
-import App from 'src/App'
+import App from 'src/<%= (entry.rootComponent) ? entry.rootComponent : 'App' %>'
 
-import router from 'src/router'
+import router from 'src/<%= (entry.routerFile) ? entry.routerFile : 'router' %>'
+
 <% if (store) { %>
 import store from 'src/store'
 <% } %>
