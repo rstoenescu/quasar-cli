@@ -1,0 +1,20 @@
+{
+  "comments": false,
+  "test": {
+    "presets": [
+      ["env", {"modules": false}],
+      ["stage-2"]
+    ],
+    "plugins": [
+      ["istanbul"],
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./src"
+          ]
+        }
+      ]
+    ]
+  }
+}

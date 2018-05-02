@@ -17,7 +17,11 @@ Quasar Framework is an MIT-licensed open source project. Its ongoing development
 
 ### Installing
 
-`$ npm install -g quasar-cli`
+```bash
+$ npm install -g quasar-cli
+# or...
+$ yarn global add quasar-cli
+```
 
 ### TODO Command overview
 
@@ -29,8 +33,9 @@ Display list of commands:
 - `dev` - run dev server for your app
 - `build` - build for production
 - `clean` - clean build assets
-- `new` - create app assets (component, pages, layouts, store module)
+- `new` - create app assets (component, pages, layouts, store module, test-runner)
 - `serve` - start a live reload HTTP server on a folder (like `/dist`)
+- `test` - run unit tests with mocha-webpack + chai 
 
 ### Help
 
