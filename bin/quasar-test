@@ -1,0 +1,174 @@
+#!/usr/bin/env node
+
+const
+  fs = require('fs'),
+  parseArgs = require('minimist'),
+  chalk = require('chalk'),
+  spawn = require('../lib/helpers/spawn'),
+  log = require('../lib/helpers/logger')('app:mode'),
+  appPaths = require('../lib/build/app-paths'),
+  logger = require('../lib/helpers/logger'),
+  warn = logger('app:mode-test', 'red'),
+  resolveGlobal = require('resolve-global')
+
+let allTests = false
+
+if (!fs.existsSync(appPaths.testDir)) {
+  warn(`
+  Code coverage and testing not setup. Please run:
+   
+    $ quasar mode --add test 
+    
+    `)
+  return
+}
+
+const argv = parseArgs(process.argv.slice(2), {
+  alias: {
+    h: 'help',
+    u: 'unit',
+    w: 'watch',
+    c: 'cover',
+    e: 'e2e',
+    t: 'type',
+    q: 'quality',
+    l: 'lighthouse',
+    a: 'all',
+    r: 'url',
+    y: 'yes',
+    o: 'options',
+    p: 'outputpath',
+    g: 'config'
+  },
+  boolean: ['h', 'u', 'c', 'e', 'a', 'l', 'y', 'w'],
+  string: ['o', 'r', 'q', 'p', 'g','t'],
+  default: 'a'
+})
+
+
+if (argv.help) {
+  // these options are taken from https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-unit-mocha
+  console.log(`
+    Description
+      This command is a hook to all of the installed test-runners in quasar-cli. Calling it
+      without any options is the same as calling it with the --all
+
+     Options     
+      --help, -h          Displays this message
+      --all, -a           Run all tests 
+      --unit, -u          Run unit tests (default behaviour)
+      --watch, -w         Watch for code changes       
+      --cover, -c         Run code coverage      
+      --options, -o       Generic options to pass to runners. Use at own peril.
+
+      CYPRESS
+      --e2e, -e           Run E2E tests
+      --type, -t          Choose type of Cypress runner [verify|run|open]
+      
+      LIGHTHOUSE FLAGS
+      --url, -r           Use this url for testing (needed by Lighthouse)
+      --view, -v          Load into the browser
+      --config, -g        Which config.js to load
+      
+      LIGHTHOUSE CLI
+      --lighthouse, -l    Analyse site with Lighthouse CLI (requires a global install)
+      --yes, -y           Overwrite results (instead of using a timestamp)
+      
+      LIGHTHOUSE NODE
+      --quality, -q       Call Lighthouse with node bindings
+
+    Usage
+      § quasar test           # runs all tests 
+      $ quasar test -u        # runs mocha-webpack --watch 
+      $ quasar test -c        # runs code-coverage with nyc
+      $ quasar test -e        # runs e2e with cypress
+      $ quasar test -l        # runs code quality with lighthouse (CLI)
+      $ quasar test -q        # runs code quality with lighthouse (node)
+  `)
+  process.exit(0)
+}
+
+require('../lib/helpers/ensure-argv')(argv, 'mode')
+const getMode = require('../lib/mode')
+const watch = !argv.watch || !argv.default ? undefined : '--watch' // todo: better method
+
+
+if (argv.all || argv.default) {
+  log(`Starting All Tests`)
+  // running mocha-webpack this way creates a secondary terminal
+  allTests = true
+}
+
+if (argv.unit || allTests !== false) {
+  log(`Starting Unit Tests`)
+  // running mocha-webpack this way creates a secondary terminal
+  spawn.sync('./node_modules/.bin/cross-env',
+    ['NODE_ENV=test', './node_modules/.bin/mocha-webpack', watch])
+}
+
+if (argv.cover || allTests !== false) {
+  log(`Starting Coverage`)
+  // this will only run as a spawned service
+  spawn.sync('./node_modules/.bin/cross-env',
+    ['NODE_ENV=test', './node_modules/.bin/nyc', './node_modules/.bin/mocha-webpack'])
+}
+
+if (argv.e2e || allTests !== false) {
+  log(`Starting E2E testing.`)
+  let cypress = resolveGlobal.silent('cypress') ? 'cypress' : './node_modules/.bin/cypress'
+  const type = !argv.type ? 'open' : argv.type // todo: better method
+  const config = !argv.config ? './test/e2e/cypress/full-config.js' : argv.config // todo: better method
+  spawn.sync(cypress,
+    [type, `--config=${config}`])
+}
+
+
+if (argv.lighthouse || allTests !== false) {
+  const lighthouse = resolveGlobal.silent('lighthouse') ? 'lighthouse' : null
+  if (lighthouse === null) {
+    // Not sure if this is good
+    log(`Please install lighthouse globally. It won't run in this mode otherwise.
+      $ yarn global add lighthouse      
+    `)
+    process.exit(0)
+  } else {
+    const url = !argv.url ? 'http://localhost:8080' : argv.url // todo: better method
+    const config = !argv.config ? './test/quality/configs/full-config.js' : argv.config // todo: better method
+    log(`Starting Lighthouse testing.`)
+    const outputPath = !argv.outputpath ? './test/quality/reports/' : argv.outputpath // todo: better method
+    const view = !argv.view ? '' : '--view' // todo: better method
+    const now = !argv.yes ? '-' + Math.floor((new Date).getTime() / 1000) : ''
+    spawn.sync(lighthouse,
+      [url, view, `--output-path=${outputPath}lighthouse-results${now}.html`, `--config-path=${config}`])
+  }
+}
+if (argv.quality) {
+  // todo: check for VALID types
+  const testurl = !argv.url ? 'http://localhost:8080' : argv.url // todo: better method
+  const options = !argv.options ? {
+    chromeFlags: ['--show-paint-rects']
+  } : argv.options // todo: better method
+  const quality = !argv.quality ? 'full' : argv.quality
+  const Performance = require(appPaths.testDir + '/quality/lighthouse-runner')
+  const config = !argv.config ? './test/quality/configs/full-config.js' : argv.config // todo: better method
+  const configPath = require(config)
+  Performance.launchChromeAndRunLighthouse(testurl, options, configPath).then(results => {
+    console.log(JSON.stringify(results))
+  })
+}
+
+
+
+
+
+
+
+if (argv.add) {
+  getMode(argv.add).add()
+  process.exit(0)
+}
+
+else if (argv.remove) {
+  getMode(argv.remove).remove()
+  process.exit(0)
+}

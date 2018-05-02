@@ -34,7 +34,8 @@ else {
     'info',
     'serve',
     'new',
-    'help'
+    'help',
+    'test'
   ]
 
   let cmd = process.argv[2]
@@ -49,7 +50,8 @@ else {
         i: 'info',
         s: 'serve',
         n: 'new',
-        h: 'help'
+        h: 'help',
+        t: 'test'
       }
       cmd = mapToCmd[cmd]
     }
