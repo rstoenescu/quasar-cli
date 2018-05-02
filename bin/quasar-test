@@ -30,6 +30,7 @@ const argv = parseArgs(process.argv.slice(2), {
     w: 'watch',
     c: 'cover',
     e: 'e2e',
+    t: 'type',
     q: 'quality',
     l: 'lighthouse',
     a: 'all',
@@ -40,7 +41,7 @@ const argv = parseArgs(process.argv.slice(2), {
     g: 'config'
   },
   boolean: ['h', 'u', 'c', 'e', 'a', 'l', 'y', 'w'],
-  string: ['o', 'r', 'q', 'p', 'g'],
+  string: ['o', 'r', 'q', 'p', 'g','t'],
   default: 'a'
 })
 
@@ -58,8 +59,11 @@ if (argv.help) {
       --unit, -u          Run unit tests (default behaviour)
       --watch, -w         Watch for code changes       
       --cover, -c         Run code coverage      
-      --e2e, -e           Run E2E tests
       --options, -o       Generic options to pass to runners. Use at own peril.
+
+      CYPRESS
+      --e2e, -e           Run E2E tests
+      --type, -t          Choose type of Cypress runner [verify|run|open]
       
       LIGHTHOUSE FLAGS
       --url, -r           Use this url for testing (needed by Lighthouse)
@@ -112,8 +116,10 @@ if (argv.cover || allTests !== false) {
 if (argv.e2e || allTests !== false) {
   log(`Starting E2E testing.`)
   let cypress = resolveGlobal.silent('cypress') ? 'cypress' : './node_modules/.bin/cypress'
+  const type = !argv.type ? 'open' : argv.type // todo: better method
+  const config = !argv.config ? './test/e2e/cypress/full-config.js' : argv.config // todo: better method
   spawn.sync(cypress,
-    ['verify', argv.options])
+    [type, `--config=${config}`])
 }
 
 
