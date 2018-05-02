@@ -1,0 +1,15 @@
+{
+  "baseUrl": null,
+  "env": {},
+  "ignoreTestFiles": {},
+  "watchForFileChanges": true,
+  "screenshotOnHeadlessFailure": true,
+  "fileServerFolder": "./src",
+  "fixturesFolder": "./test/cypress/fixtures",
+  "integrationFolder": "./test/spec_integration",
+  "pluginsFile": "./test/cypress/plugins/index.js",
+  "screenshotsFolder": "./test/cypress/screenshots",
+  "supportFile": "./test/cypress/cypress_setup.js",
+  "videosFolder": "./test/cypress/videos",
+  "chromeWebSecurity": true
+}

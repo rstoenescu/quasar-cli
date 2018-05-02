@@ -1,7 +1,9 @@
 {
   "check-coverage": true,
   "all": true,
-  "lines": 0,
+  "lines": 95,
+  "functions": 95,
+  "branches": 95,
   "reporter": [
     "lcov",
     "text",
@@ -12,5 +14,5 @@
   "require": [
     "./test/setup.js"
   ],
-  "report-dir": "./coverage"
+  "report-dir": "./test/coverage/nyc-report"
 }

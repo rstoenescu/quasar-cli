@@ -2,4 +2,4 @@
 --webpack-config test/webpack.test.js
 --require test/setup.js
 --check-leaks
-test/**/*.spec.js
+test/**/*.unit.js

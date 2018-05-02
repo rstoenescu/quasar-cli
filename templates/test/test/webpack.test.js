@@ -18,11 +18,15 @@ module.exports = {
   module: {
     rules: [
       {
-        test: '/spec\.js', // /test\.js$/,
+        test: '/unit\.js',
         use: 'mocha-loader',
         exclude: /node_modules/,
       },
       {
+        test: '/e2e\.js',
+        use: 'cypress-loader', // need one of these... no?
+        exclude: /node_modules/,
+      },      {
         test: /\.vue$/,
         loader: 'vue-loader'
       },
@@ -32,7 +36,12 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.js$|\.vue$/,
+        test: /\.ts$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/
+      },
+      {
+        test: /\.js$|\.vue$|\.ts$/,
         use: {
           loader: 'istanbul-instrumenter-loader',
           options: {
@@ -46,7 +55,6 @@ module.exports = {
       }
     ]
   },
-  // target: 'node',  // webpack should compile node compatible code (breaks stuff)
   externals: [nodeExternals()], // in order to ignore all modules in node_modules folder
   devtool: "inline-cheap-module-source-map"
 }

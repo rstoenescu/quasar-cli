@@ -1,11 +1,11 @@
 import { shallow, createLocalVue } from '@vue/test-utils'
 import Quasar, * as All from '@quasar'
-import List from '@/components/List.vue'
+import List from '@/components/QBtn-demo.vue'
 
 const localVue = createLocalVue()
 localVue.use(Quasar, {components: All, directives: All, plugins: All})
 
-describe('List.vue in spec', () => {
+describe('QBtn-demo.vue', () => {
   let wrapper
   beforeEach(() => {
     wrapper = shallow(List, {

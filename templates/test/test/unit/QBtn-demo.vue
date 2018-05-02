@@ -10,6 +10,7 @@
 </template>
 
 <script>
+  // MOVE THIS FILE TO THE /src/components folder
   export default {
     name: 'list',
     data () {

@@ -1,5 +1,3 @@
-let expect = require('chai').expect
-
 // here are a few examples of a simple math test
 
 describe('#Schroedinger\'s Concat', function() {
@@ -34,8 +32,6 @@ describe('#Schroedinger\'s Concat', function() {
     }
   })
 })
-
-var assert = require('chai').assert;
 
 function add() {
   return Array.prototype.slice.call(arguments).reduce(function(prev, curr) {
