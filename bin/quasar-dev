@@ -37,7 +37,7 @@ if (argv.help) {
       $ quasar dev -p <port number>
     Options
       --theme, -t      App theme (default: mat)
-      --mode, -m       App mode [spa|pwa|cordova|electron] (default: spa)
+      --mode, -m       App mode [spa|pwa|cordova|electron|test] (default: spa)
       --port, -p       A port number on which to start the application
       --hostname, -H   A hostname to use for serving the application
       --help, -h       Displays this message

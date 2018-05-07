@@ -1,0 +1,18 @@
+{
+  "env": {
+    "development": {
+      "presets": [
+        ["env", { "modules": false }]
+      ]
+    },
+    "test": {
+      "presets": [
+        ["env", {
+          "modules": false,
+          "targets": { "node": "current" }
+        }]
+      ],
+      "plugins": ["istanbul"]
+    }
+  }
+}
