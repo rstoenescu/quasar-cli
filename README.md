@@ -39,7 +39,7 @@ Display list of commands:
 <!--
 ### Create App
 
-Initializes an App folder with a starter kit boilerplate.
+Initializes an App folder with the Quasar App boilerplate.
 
 `$ quasar init [template name] <folder-name>`
 
