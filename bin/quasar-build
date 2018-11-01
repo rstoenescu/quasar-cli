@@ -36,6 +36,7 @@ if (argv.help) {
                         [darwin|win32|linux|mas|all]
                       - Electron with "electron-builder" bundler (default: yours)
                         [darwin|mac|win32|win|linux|all]
+                      - Firebase (default: all installed)
     --debug, -d    Build for debugging purposes
     --help, -h     Displays this message
 
@@ -93,7 +94,10 @@ function finalize (mode, quasarConfig) {
   if (mode === 'electron') {
     return require('../lib/electron').build(quasarConfig)
   }
-
+  // TODO: Integrate Firebase Runner
+  // if (mode === 'firebase') {
+  //   return require('../lib/firebase').build(quasarConfig)
+  // }
   return Promise.resolve()
 }
 
@@ -166,7 +170,7 @@ async function build () {
 
     finalize(argv.mode, quasarConfig).then(() => {
       banner(argv, 'build', {
-        outputFolder: argv.mode === 'cordova'
+        outputFolder: argv.mode === 'cordova' || argv.mode === 'firebase'
           ? path.join(outputFolder, '..')
           : outputFolder
       })

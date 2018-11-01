@@ -69,6 +69,7 @@ const
     { key: '  quasar-cli', value: getSpawnOutput('quasar') },
     { key: '  vue-cli', value: getSpawnOutput('vue') },
     { key: '  cordova', value: getSpawnOutput('cordova') },
+    { key: '  firebase', value: getSpawnOutput('firebase') },
     { key: 'Important local packages', section: true }
   ]
 

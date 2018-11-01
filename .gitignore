@@ -4,3 +4,5 @@ node_modules/
 ssl-server.pem
 npm-debug.log
 *.sublime*
+.idea
+*.iml
