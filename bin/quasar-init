@@ -57,6 +57,12 @@ if (!argv._[0]) {
   process.exit(0)
 }
 
+if (parseArgs(process.argv.slice(2))._.length > 1) {
+  warn(`Kindly provide only one argument for the <folder_name>`)
+  warn()
+  process.exit(0)
+}
+
 const
   cliDir = resolve(__dirname, '..')
 
