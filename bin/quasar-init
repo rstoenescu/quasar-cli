@@ -15,13 +15,13 @@ const argv = parseArgs(process.argv.slice(2), {
 if (argv.help) {
   console.log(`
   Description
-    Create a Quasar App folder from the starter kit.
+    Create a Quasar App folder from the boilerplate repo.
     You need "vue-cli" package installed globally.
   Usage
-    # Install latest starter kit:
+    # Install latest Quasar App boilerplate:
     $ quasar init <folder_name>
 
-    # Install starter kit for specific Quasar version.
+    # Install boilerplate for a specific Quasar version.
     # Only specify the major and minor version (no patch version).
     # Good example: 0.15, 1.0, 1.2
     # Bad example: 0.15.2, 1.0.1, 1.2.2
@@ -32,7 +32,7 @@ if (argv.help) {
 
   Options
     --version, -v  Install specific Quasar version
-    --type, -t     Install specific starter kit
+    --type, -t     Install specific boilerplate
     --help, -h     Displays this message
   `)
   process.exit(0)
@@ -60,7 +60,7 @@ if (!argv._[0]) {
 const
   cliDir = resolve(__dirname, '..')
 
-let template = `quasarframework/quasar-starter-kit${argv.type ? `-${argv.type}` : ''}`
+let template = `quasarframework/quasar-boilerplate${argv.type ? `-${argv.type}` : ''}`
 if (argv.version) {
   template += `#v${argv.version}`
 }
